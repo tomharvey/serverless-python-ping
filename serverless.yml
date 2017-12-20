@@ -1,0 +1,27 @@
+service: data-collection
+provider:
+  name: aws
+  runtime: python3.6
+  stage: ${opt:stage, env:STAGE, 'development'}
+  region: ${opt:region, 'eu-west-1'}
+  memorySize: 128
+  timeout: 30
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+    REGION: ${opt:region, self:provider.region}
+
+package:
+  exclude:
+    - contrib/**
+    - build/**
+    - .eggs/**
+    - .cache/**
+    - data_collection.egg-info/**
+    - node_modules/**
+    - .serverless/**
+    - deploy/**
+    - tests/**
+
+functions:
+  hello:
+    handler: handler.hello

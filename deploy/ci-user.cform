@@ -1,0 +1,111 @@
+{
+   "AWSTemplateFormatVersion" : "2010-09-09",
+   "Description" : " Creates an IAM user with permissions to deploy a serverless application",
+   "Parameters" : {
+      "ServiceName" : {
+         "Description" : "Name of the serverless application's service name as defined in serverless.yml",
+         "Type" : "String"
+      }
+   },
+   "Resources" : {
+      "IamSssDeployAccessKey": {
+            "Type": "AWS::IAM::AccessKey",
+            "Properties": {
+                "UserName": {"Ref": "IamSssDeployUser"}
+            }
+        },
+        "IamSssDeployUser": {
+            "Type": "AWS::IAM::User"
+        },
+        "IamSssDeployPolicy": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": { "Fn::Join": ["-", ["DeployServerless", { "Ref": "ServiceName" } ]]},
+                "Users": [{ "Ref": "IamSssDeployUser" }],
+                "PolicyDocument": {
+                   "Version": "2012-10-17",
+                   "Statement": [
+                       {
+                           "Action": [
+                               "cloudformation:*"
+                           ],
+                           "Effect": "Allow",
+                           "Resource": { "Fn::Join" : ["", ["arn:aws:cloudformation:", { "Ref": "AWS::Region" },":", {"Ref" : "AWS::AccountId"}, ":stack/", {"Ref" : "ServiceName"}, "*"] ]}
+                       },
+                       {
+                           "Action": [
+                               "cloudformation:ValidateTemplate"
+                           ],
+                           "Effect": "Allow",
+                           "Resource": "*"
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                               "s3:*"
+                           ],
+                           "Resource": [
+                               { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "ServiceName"}, "-serverlessdeploymentbuck*"] ]}
+                           ]
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                               "lambda:*"
+                           ],
+                           "Resource": [
+                               { "Fn::Join" : ["", ["arn:aws:lambda:", { "Ref": "AWS::Region" },":", {"Ref" : "AWS::AccountId"}, ":function:", {"Ref" : "ServiceName"}, "*"] ]}
+                           ]
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                              "logs:DescribeLogGroups"
+                           ],
+                           "Resource": [
+                              { "Fn::Join" : ["", ["arn:aws:logs:", { "Ref": "AWS::Region" },":", {"Ref" : "AWS::AccountId"}, ":log-group::log-stream:"] ]}
+                           ]
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                              "logs:*"
+                           ],
+                           "Resource": [
+                              { "Fn::Join" : ["", ["arn:aws:logs:", { "Ref": "AWS::Region" },":", {"Ref" : "AWS::AccountId"}, ":log-group:/aws/lambda/", {"Ref" : "ServiceName"}, "-*"] ]}
+                           ]
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                              "iam:*"
+                           ],
+                           "Resource": [
+                              { "Fn::Join" : ["", ["arn:aws:iam::", {"Ref" : "AWS::AccountId"}, ":role/", {"Ref" : "ServiceName"}, "-*"] ]}
+                           ]
+                       },
+                       {
+                           "Effect": "Allow",
+                           "Action": [
+                              "events:*",
+                           ],
+                           "Resource": [
+                              { "Fn::Join" : ["", ["arn:aws:events:", { "Ref": "AWS::Region" }, ":", {"Ref" : "AWS::AccountId"}, ":rule/", {"Ref" : "ServiceName"}, "-*"] ]}
+                           ]
+                       }
+                   ]
+               }
+            }
+        },
+   },
+   "Outputs": {
+        "AccessKeyId": {
+            "Description": "AccessKeyId for permission to deploy the lambda service",
+            "Value": {"Ref": "IamSssDeployAccessKey" }
+        },
+        "SecretAccessKey": {
+            "Description": "SecretAccessKey for permission to deploy the lambda service",
+            "Value": {"Fn::GetAtt": [ "IamSssDeployAccessKey", "SecretAccessKey" ] }
+        }
+    }
+}
