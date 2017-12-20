@@ -47,7 +47,7 @@ jobs:
           name: install serverless plugins
           command: |
             ./node_modules/serverless/bin/serverless plugin install -n serverless-python-requirements
-            npm install
+            npm install serverless
       - run:
           name: deploy
           command: ./node_modules/serverless/bin/serverless deploy
