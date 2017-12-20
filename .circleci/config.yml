@@ -29,17 +29,24 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node
+      - image: circleci/python:3.6.3
     working_directory: ~/repo
 
     steps:
       - checkout
       - run:
+          name: install node
+          command: |
+            sudo apt-get install node
+            node --version
+      - run:
           name: install serverless
           command: npm install serverless
       - run:
           name: install serverless plugins
-          command: ./node_modules/serverless/bin/serverless plugin install -n serverless-python-requirements
+          command: |
+            ./node_modules/serverless/bin/serverless plugin install -n serverless-python-requirements
+            npm install
       - run:
           name: deploy
           command: ./node_modules/serverless/bin/serverless deploy
