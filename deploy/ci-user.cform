@@ -45,7 +45,7 @@
                                "s3:*"
                            ],
                            "Resource": [
-                               { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "ServiceName"}, "-serverlessdeploymentbuck*"] ]}
+                               { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref" : "ServiceName"}, "-*-", "serverlessdeploymentbuck-*"] ]}
                            ]
                        },
                        {
