@@ -23,5 +23,5 @@ package:
     - tests/**
 
 functions:
-  hello:
-    handler: handler.hello
+  get_google:
+    handler: data_collection.get_google

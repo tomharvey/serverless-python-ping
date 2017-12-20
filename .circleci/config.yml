@@ -40,6 +40,9 @@ jobs:
       - run:
           name: deploy
           command: ./node_modules/serverless/bin/serverless deploy
+      - run:
+          name: verify
+          command: ./node_modules/serverless/bin/serverless invoke --function get_google
 
 workflows:
   version: 2
