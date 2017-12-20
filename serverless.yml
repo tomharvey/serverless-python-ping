@@ -22,6 +22,21 @@ package:
     - deploy/**
     - tests/**
 
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    noDeploy:
+      - pytest
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - python-dateutil
+      - s3transfer
+      - six
+
 functions:
   get_google:
     handler: data_collection.get_google
