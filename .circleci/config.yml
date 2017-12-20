@@ -36,7 +36,7 @@ jobs:
       - checkout
       - run:
           name: install serverless
-          command: npm install -g serverless
+          command: npm install serverless
       - run:
           name: deploy
           command: serverless deploy
