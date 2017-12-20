@@ -39,7 +39,7 @@ jobs:
           command: npm install serverless
       - run:
           name: deploy
-          command: serverless deploy
+          command: .node_modules/serverless/bin/serverless deploy
 
 workflows:
   version: 2
