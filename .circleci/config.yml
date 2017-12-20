@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/python:3.6.3
     working_directory: ~/repo
@@ -35,4 +35,5 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
           
