@@ -1,4 +1,4 @@
-from data_collection import get_google
+from service import get_google
 
 
 def test_get_google():
