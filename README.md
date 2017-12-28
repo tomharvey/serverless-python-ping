@@ -16,10 +16,12 @@ When invoked it will make a GET request of google.com and report the status code
 4 - I have a lot less bandwidth than my CI provider. If I deploy from my workstation, I have to wait for packages to upload from my machine. Here, we're only using [requests](http://docs.python-requests.org) but realistically your packages will grow and you will be left waiting for the upload. There is a timeout, with enough dependancies you will find it. By deloying from the CI platform, you only ever need to upload the git diff.
 
 
-### Deployemnt permissions
+### Deployment permissions
 You need to give your deployment platform (in this case, CircleCI) permission to do certain things to your AWS account. It's not made easy to find what permissions `serverless deploy` requires, and it does seem to change from version to version. This is tested using version 1.25.0
 
 The file in `deploy/ci-user.cform` is a Cloudfomration template which will create a user with the currently required permissions. Have a look at this file for a better understanding of what it grants access to. I could have restricted the permissions further, but instead opted to restrict the resources which the broad permissions can be applied to.
+
+When using this Cloudformation template, you must provide the same service name as you specify in your `serverless.yml` file.
 
 ### CircleCI
 The file in `.circleci/config.yml` will be enough to run some python tests and runa  deployment process as well. The deploy process requires both Node (for serverless operations) and python.
