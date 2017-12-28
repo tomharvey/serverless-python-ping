@@ -1,4 +1,4 @@
-from service import get_google
+from serverless_python_ping import get_google
 
 
 def test_get_google():

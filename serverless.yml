@@ -1,4 +1,4 @@
-service: data-collection
+service: serverless-python-ping
 provider:
   name: aws
   runtime: python3.6
@@ -16,7 +16,7 @@ package:
     - build/**
     - .eggs/**
     - .cache/**
-    - data_collection.egg-info/**
+    - serverless_python_ping.egg-info/**
     - node_modules/**
     - .serverless/**
     - deploy/**
@@ -39,4 +39,4 @@ custom:
 
 functions:
   get_google:
-    handler: data_collection.get_google
+    handler: serverless_python_ping.get_google
