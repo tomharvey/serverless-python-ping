@@ -27,3 +27,10 @@ When using this Cloudformation template, you must provide the same service name 
 
 ### CircleCI
 The file in `.circleci/config.yml` will be enough to run some python tests and run a deployment process as well. The deploy process requires both Node (for serverless operations) and python.
+
+
+### Usage
+Example:
+```
+aws cloudformation deploy --template deploy/ci-user.cform --stack-name theStackName --parameter-overrides ServiceName=ChangeThis --capabilities CAPABILITY_IAM --output text
+```
